@@ -6,7 +6,7 @@ Created on Wed Nov 21 21:51:18 2018
 """
 import smtplib
 #send an email update (or text message)  
-def send_email(emailstr,msg,sub):
+def send_email(msg,sub):
     emailstr = open('@usrpw.txt','r').read().split(',')
     gmail_user = emailstr[0]
     gmail_pwd  = emailstr[1]
