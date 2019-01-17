@@ -52,11 +52,11 @@ while True:
           ORDER BY previous_close_date DESC''')
     row_verify = c.fetchone()
     conn.close()
+    #login
+    trader.login(username=loginstr[0], password=loginstr[1]) 
     quote_data = trader.quote_data(row_verify['symbol'])
     #Load database once daily with current securities and watchlist data
     if quote_data['previous_close_date'] > row_verify['previous_close_date']:
-        #login
-        trader.login(username=loginstr[0], password=loginstr[1]) 
         #Calculate all current securty weights and send alert, return security tick list              
         securities_tick = rp.rhpw.portfolio_weight(trader)
         #Generate current watchlist ticks
@@ -67,8 +67,6 @@ while True:
             tick_check = trader.security_tick(watch['instrument'])
             if tick_check not in securities_tick:
                 watchlist_tick.append(tick_check)
-        #Logout
-        trader.logout()
         all_tick = securities_tick + watchlist_tick
         #Insert current securities and watchlist into the database        
         rp.rhdbi.database_insert(trader,path,all_tick)   
