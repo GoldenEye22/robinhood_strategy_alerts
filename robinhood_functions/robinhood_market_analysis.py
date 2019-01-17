@@ -10,8 +10,6 @@ import numpy as np
 #Import functions as abbreviations
 import robinhood_send_email as rhse
 def market_analysis(trader,loginstr,tick_notify,loss_trig,gain_trig,refresh_time,dayofweek):
-    #login
-    trader.login(username=loginstr[0], password=loginstr[1])
     #Account position section analysis 
     #Grab current securities, positions, and portfolio info
     securities = trader.securities_owned()
@@ -90,5 +88,4 @@ def market_analysis(trader,loginstr,tick_notify,loss_trig,gain_trig,refresh_time
     time.sleep(refresh_time)
     #Track current time    
     today = datetime.datetime.today()
-    print str(today)+' '+str(dayofweek)                              
-    trader.logout()
+    print str(today)+' '+str(dayofweek)
