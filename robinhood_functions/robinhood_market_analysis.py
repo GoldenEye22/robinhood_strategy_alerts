@@ -9,7 +9,7 @@ import datetime
 import numpy as np
 #Import functions as abbreviations
 import robinhood_send_email as rhse
-def market_analysis(trader,loginstr,tick_notify,loss_trig,gain_trig,refresh_time,dayofweek):
+def market_analysis(trader,tick_notify,loss_trig,gain_trig,refresh_time,dayofweek):
     #Account position section analysis 
     #Grab current securities, positions, and portfolio info
     securities = trader.securities_owned()
