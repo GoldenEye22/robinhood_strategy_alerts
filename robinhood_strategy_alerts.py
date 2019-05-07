@@ -53,29 +53,78 @@ while True:
     row_verify = c.fetchone()
     conn.close()
     #login
-    trader.login(username=loginstr[0], password=loginstr[1]) 
-    quote_data = trader.quote_data(row_verify['symbol'])
+    working = False 
+    while not working:
+        try: 
+            QR = 'IV5C23V52U527UFW'
+            trader.login(username=loginstr[0], password=loginstr[1], qr_code=QR)
+            quote_data = trader.quote_data(row_verify['symbol'])
+            working = True 
+        except:
+            print 'Failed to Login'
+            time.sleep(ref_time)
+            pass
     #Load database once daily with current securities and watchlist data
     if quote_data['previous_close_date'] > row_verify['previous_close_date']:
-        #Calculate all current securty weights and send alert, return security tick list              
-        securities_tick = rp.rhpw.portfolio_weight(trader)
+        #Calculate all current securty weights and send alert, return security tick list
+        working = False
+        while not working:
+            try:              
+                securities_tick = rp.rhpw.portfolio_weight(trader)
+                working = True
+            except:
+                print 'Failed to get Portfolio Weight'
+                time.sleep(ref_time)
+                pass
         #Generate current watchlist ticks
-        watchlist = trader.watchlists()
-        watchlist_tick = []
-        for watch in watchlist['results']:
-            #Collect data for each quote to be stored
-            tick_check = trader.security_tick(watch['instrument'])
-            if tick_check not in securities_tick:
-                watchlist_tick.append(tick_check)
-        all_tick = securities_tick + watchlist_tick
-        #Insert current securities and watchlist into the database        
-        rp.rhdbi.database_insert(trader,path,all_tick)   
+        working = False
+        while not working:
+            try:
+                watchlist = trader.watchlists()
+                watchlist_tick = []
+                for watch in watchlist['results']:
+                    #Collect data for each quote to be stored
+                    tick_check = trader.security_tick(watch['instrument'])
+                    if tick_check not in securities_tick:
+                        watchlist_tick.append(tick_check)
+                all_tick = securities_tick + watchlist_tick
+                working = True
+            except:
+                print 'Failed to get Watchlists'
+                time.sleep(ref_time)
+                pass
+        #Insert current securities and watchlist into the database
+        working = False
+        while not working:
+            try:
+                rp.rhdbi.database_insert(trader,path,all_tick)   
+                working = True
+            except:
+                print 'Failed to Database Insert'
+                time.sleep(ref_time)
+                pass
         #Analyze the database over specified number of trading days
-        rp.rhdba.database_analysis(path,all_tick,trade_days,decline)
+        working = False
+        while not working:
+            try:
+                rp.rhdba.database_analysis(path,all_tick,trade_days,decline)
+                working = True
+            except:
+                print 'Failed to do Database Analysis'
+                time.sleep(ref_time)
+                pass
     #Main daily stock market analyzer 
     while (nine30am <= today < fourpm) & (dayofweek != 'Saturday') & (dayofweek != 'Sunday'):
         #Analyze live stock data based on current securities and watchlist
-        rp.rhma.market_analysis(trader,loginstr,tick_notify,loss_trig,gain_trig,ref_time,dayofweek)
+        working = False
+        while not working:
+            try:
+                rp.rhma.market_analysis(trader,tick_notify,loss_trig,gain_trig,ref_time,dayofweek)
+                working = True
+            except:
+                print 'Failed to do Market Analysis'
+                time.sleep(ref_time)
+                pass
     #Wait time until refresh check
     print 'Out of Time Window - Sleep 5 min '
     time.sleep(ref_time)
