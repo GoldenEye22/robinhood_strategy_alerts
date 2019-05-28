@@ -6,7 +6,7 @@ Created on Wed Nov 21 21:57:08 2018
 """
 import time
 #Import functions as abbreviations
-import robinhood_send_email as rhse
+import robinhood_functions.robinhood_send_email as rhse
 def portfolio_weight(trader):      
     #Grab current securities, positions, and portfolio info
     securities = trader.securities_owned()
@@ -38,7 +38,7 @@ def portfolio_weight(trader):
                      /float(portfolios['last_core_equity'])*100      
     msg1 = ''
     #Send current profolio weighting
-    for itick,percent in sorted(weight.iteritems(),key=lambda(k,v):(v,k),reverse=True):
+    for itick,percent in [(k, weight[k]) for k in sorted(weight, key=weight.get, reverse=True)]:
         msg1 += '%s %s%%\n'\
         %(itick,str(percent)[:4])
         #Txt message can only be so long     

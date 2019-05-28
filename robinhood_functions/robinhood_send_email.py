@@ -31,7 +31,7 @@ def send_email(msg,sub):
         server.sendmail(FROM, TO, message)
         #server.quit()
         server.close()
-        print 'Successfully Sent Stock Alert'
+        print ('Successfully Sent Stock Alert')
     except:
-        print 'Failed to Send Stock Alert'
-    return
+        print ('Failed to Send Stock Alert')
+    return None

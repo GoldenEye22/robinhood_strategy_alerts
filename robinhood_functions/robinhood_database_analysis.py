@@ -7,8 +7,8 @@ Created on Thu Nov 22 22:54:35 2018
 import time
 import sqlite3
 #Import functions as abbreviations
-import robinhood_send_email as rhse
-def database_analysis(path,all_tick,trade_days,decline):
+import robinhood_functions.robinhood_send_email as rhse
+def database_analysis(path,all_tick,trade_days,decline,skew):
     conn = sqlite3.connect(path)
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
@@ -23,6 +23,7 @@ def database_analysis(path,all_tick,trade_days,decline):
         #row.keys()
         msg2 = ''
         send = 0
+        sentiment = 1
         # Do we have x trading days of data for the current ticker?
         if len(row) >= trade_days:
             # Has the ticker dropped more the 5% in 30 trading days
@@ -30,7 +31,7 @@ def database_analysis(path,all_tick,trade_days,decline):
                 msg2 += '%s Trading Close @ %s Down %s%% Over %s tdays\n'\
                 %(all_tick[itick], row[0]['previous_close'],
                 str((1-float(row[0]['previous_close'])
-                /float(row[trade_days-1]['previous_close']))*100)[:4],str(trade_days))
+                /float(row[trade_days-1]['previous_close']))*100)[:4], str(trade_days))
                 # Has the ticker traded up the past 5 trading days
                 if float(row[0]['previous_close'])/float(row[4]['previous_close']) > 1:
                     msg2 += 'Trading Close Up %s%% Pass 5 tdays\n'\
@@ -42,6 +43,18 @@ def database_analysis(path,all_tick,trade_days,decline):
                 msg2 += '%s Trading @ %s near a 52 Week Low\n'\
                 %(all_tick[itick], row[0]['previous_close'])
                 send = 1
+            #Compile the sentiments over the last 25 trading days
+            for day in range(trade_days):
+                sentiment = sentiment*row[day]['opinion']
+            #Is the sentiment skewed
+            if sentiment >= (1*skew):
+                msg2 += '%s Sentiment is Over Pos @ %s thru %s tdays\n'\
+                %(all_tick[itick], str(sentiment)[:4], str(trade_days))
+                send = 1
+            elif sentiment <= (1/skew):
+                msg2 += '%s Sentiment is Over Neg @ %s thru %s tdays\n'\
+                %(all_tick[itick], str(sentiment)[:4], str(trade_days))
+                send = 1
             # Is there a message to send?
             if send == 1:
                 rhse.send_email(msg2,2)
@@ -50,4 +63,5 @@ def database_analysis(path,all_tick,trade_days,decline):
     # We can also close the connection if we are done with it.
     # Just be sure any changes have been committed or they will be lost.
     conn.close()
-    print 'Finish Database Analysis'
+    print ('Finish Database Analysis')
+    return None

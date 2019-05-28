@@ -7,7 +7,7 @@ Created on Thu Nov 22 23:15:20 2018
 import sqlite3
 def database_insert(trader,path,all_tick):
     #Connect to database
-    print 'Connect DB'
+    print ('Connect DB')
     conn = sqlite3.connect(path)
     c = conn.cursor()
     #Loop through securities and watchlish to insert into database
@@ -82,7 +82,7 @@ def database_insert(trader,path,all_tick):
         # Insert a row of data
         c.execute('INSERT INTO stocks VALUES (?,?,?,?,?,?,?,?,?,?)', enterticks)
     # Save (commit) the changes and close
-    print 'Committ DB'
+    print ('Committ DB')
     conn.commit()
     conn.close()
     return all_tick

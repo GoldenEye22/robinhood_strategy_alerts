@@ -5,11 +5,10 @@ Created on Thu Nov 22 23:00:57 2018
 @author: Andy
 """
 import time
-import datetime
 import numpy as np
 #Import functions as abbreviations
-import robinhood_send_email as rhse
-def market_analysis(trader,tick_notify,loss_trig,gain_trig,refresh_time,dayofweek):
+import robinhood_functions.robinhood_send_email as rhse
+def market_analysis(trader,tick_notify,loss_trig,gain_trig):
     #Account position section analysis 
     #Grab current securities, positions, and portfolio info
     securities = trader.securities_owned()
@@ -82,10 +81,4 @@ def market_analysis(trader,tick_notify,loss_trig,gain_trig,refresh_time,dayofwee
                 rhse.send_email(msg0,0)
                 time.sleep(5)
                 tick_notify[ticker] = 1
-    #Keep looping until every stock has been notificated                                           
-    print 'Market Open Stock Analyzer - Sleep 5 min'
-    #Wait time until refresh check
-    time.sleep(refresh_time)
-    #Track current time    
-    today = datetime.datetime.today()
-    print str(today)+' '+str(dayofweek)
+    return None
