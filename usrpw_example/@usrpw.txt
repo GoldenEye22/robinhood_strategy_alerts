@@ -1,0 +1,1 @@
+gmail_user,gmail_pwd,email1,email2,FROM
