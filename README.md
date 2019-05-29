@@ -9,4 +9,4 @@ Run robinhood_strategy_alerts.py with Robinhood account credentials to extract y
 
 # Related
 
-* [Robinhood](https://github.com/Jamonek/Robinhood) - Python Framework to make trades with Robinhood Private API.
+* [Robinhood](https://github.com/GoldenEye22/Robinhood) - Python Framework to make trades with Robinhood Private API.
