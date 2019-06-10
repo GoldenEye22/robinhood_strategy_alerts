@@ -9,6 +9,7 @@ import time
 import calendar
 import datetime
 import sqlite3
+import sys
 import robinhood_functions as rp
 #Setup
 log = open("robinhood_strategy_alerts.log", "a")
