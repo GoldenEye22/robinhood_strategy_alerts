@@ -9,7 +9,6 @@ import time
 import calendar
 import datetime
 import sqlite3
-import sys
 import robinhood_functions as rp
 #Setup
 trader = Robinhood()
