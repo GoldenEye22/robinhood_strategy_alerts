@@ -12,8 +12,6 @@ import sqlite3
 import sys
 import robinhood_functions as rp
 #Setup
-log = open("robinhood_strategy_alerts.log", "w")
-sys.stdout = log
 trader = Robinhood()
 path = 'robinhood_database/robinhood.db'
 loginstr = open('usrpw.txt','r').read().split(',')
