@@ -27,22 +27,28 @@ def database_analysis(path,all_tick,trade_days,decline,skew):
         # Do we have x trading days of data for the current ticker?
         if len(row) >= trade_days:
             # Has the ticker dropped more the 5% in 30 trading days
-            if float(row[0]['previous_close'])/float(row[trade_days-1]['previous_close']) < decline:
-                msg2 += '%s Close @ %s Dwn %s%% Ovr %s tday\n'\
-                %(all_tick[itick], row[0]['previous_close'],
-                str((1-float(row[0]['previous_close'])
-                /float(row[trade_days-1]['previous_close']))*100)[:4], str(trade_days))
-                # Has the ticker traded up the past 5 trading days
-                if float(row[0]['previous_close'])/float(row[4]['previous_close']) > 1:
-                    msg2 += 'Up %s%% Past 5 tday\n'\
-                    %(str((float(row[0]['previous_close'])
-                    /float(row[4]['previous_close'])-1)*100)[:4])
-                send = 1
+            try: 
+                if float(row[0]['previous_close'])/float(row[trade_days-1]['previous_close']) < decline:
+                    msg2 += '%s Close @ %s Dwn %s%% Ovr %s tday\n'\
+                    %(all_tick[itick], row[0]['previous_close'],
+                    str((1-float(row[0]['previous_close'])
+                    /float(row[trade_days-1]['previous_close']))*100)[:4], str(trade_days))
+                    # Has the ticker traded up the past 5 trading days
+                    if float(row[0]['previous_close'])/float(row[4]['previous_close']) > 1:
+                        msg2 += 'Up %s%% Past 5 tday\n'\
+                        %(str((float(row[0]['previous_close'])
+                        /float(row[4]['previous_close'])-1)*100)[:4])
+                    send = 1
+            except:
+                print ('Failed to get previous_close')
             # Has the ticker reached a new 52 week low
-            if float(row[0]['low_52_weeks']) < float(row[1]['low_52_weeks']):
-                msg2 += '%s @ %s near 52 Wk Low\n'\
-                %(all_tick[itick], row[0]['previous_close'])
-                send = 1
+            try:
+                if float(row[0]['low_52_weeks']) < float(row[1]['low_52_weeks']):
+                    msg2 += '%s @ %s near 52 Wk Low\n'\
+                    %(all_tick[itick], row[0]['previous_close'])
+                    send = 1
+            except:
+                print ('Failed to get low_52_weeks')
             #Compile the sentiments over the last 25 trading days
             for day in range(trade_days):
                 sentiment = sentiment*row[day]['opinion']
