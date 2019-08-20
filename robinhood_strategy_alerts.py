@@ -22,7 +22,7 @@ tick_notify = {}
 ref_time = 300    
 loss_trig = 0.05
 gain_trig = 0.25
-trade_days = 25
+trade_days = 75
 decline = 0.95
 skew = 2
 #Endless loop, need to find better way to do this.
