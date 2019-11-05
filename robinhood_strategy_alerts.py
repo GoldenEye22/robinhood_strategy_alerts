@@ -15,7 +15,6 @@ trader = Robinhood()
 path = 'robinhood_database/robinhood.db'
 loginstr = open('usrpw.txt','r').read().split(',')
 trader.login(username=loginstr[0],password=loginstr[1],qr_code=loginstr[2])
-securities = trader.securities_owned()
 #Initialize parameters when code in executed
 todaystr = time.strftime('%Y%m%d %H:%M:%S')
 tick_notify = {}
@@ -140,11 +139,11 @@ while True:
         #Analyze the database over specified number of trading days
         working = False
         while not working:
-            #try:
+            try:
                 rp.rhdba.database_analysis(path,all_tick,trade_days,decline,skew)
                 working = True
-            #except:
-            #    print ('Failed to do Database Analysis')
+            except:
+                print ('Failed to do Database Analysis')
                 try:
                     time.sleep(ref_time)
                     trader = Robinhood()
