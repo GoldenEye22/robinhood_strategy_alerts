@@ -50,17 +50,20 @@ def database_analysis(path,all_tick,trade_days,decline,skew):
             except:
                 print ('Failed to get low_52_weeks')
             #Compile the sentiments over the last 25 trading days
-            for day in range(trade_days):
-                sentiment = sentiment*row[day]['opinion']
-            #Is the sentiment skewed
-            if sentiment >= (1*skew):
-                msg2 += '%s Sentiment ^Pos @ %s thru %s tday\n'\
-                %(all_tick[itick], str(sentiment)[:3], str(trade_days))
-                send = 1
-            elif sentiment <= (1/skew):
-                msg2 += '%s Sentiment ^Neg @ %s thru %s tday\n'\
-                %(all_tick[itick], str(sentiment)[:3], str(trade_days))
-                send = 1
+            try:
+                for day in range(trade_days):
+                    sentiment = sentiment*row[day]['opinion']
+                #Is the sentiment skewed
+                if sentiment >= (1*skew):
+                    msg2 += '%s Sentiment ^Pos @ %s thru %s tday\n'\
+                    %(all_tick[itick], str(sentiment)[:3], str(trade_days))
+                    send = 1
+                elif sentiment <= (1/skew):
+                    msg2 += '%s Sentiment ^Neg @ %s thru %s tday\n'\
+                    %(all_tick[itick], str(sentiment)[:3], str(trade_days))
+                    send = 1
+            except:
+                print ('Failed to get sentiment')
             # Is there a message to send?
             if send == 1:
                 rhse.send_email(msg2,2)

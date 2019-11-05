@@ -8,7 +8,7 @@ import time
 import numpy as np
 #Import functions as abbreviations
 import robinhood_functions.robinhood_send_email as rhse
-def market_analysis(trader,tick_notify,loss_trig,gain_trig):
+def market_analysis(trader,tick_notify,loss_trig,gain_trig,max_value):
     #Account position section analysis 
     #Grab current securities, positions, and portfolio info
     securities = trader.securities_owned()
@@ -23,6 +23,7 @@ def market_analysis(trader,tick_notify,loss_trig,gain_trig):
         last_trade_price = quote_data['last_trade_price']
         previous_close = quote_data['previous_close']
         average_buy_price = security['average_buy_price']
+        quantity = security['quantity']
         if float(average_buy_price) == 0:
             average_buy_price = '1'
         #Does the library exist for this tick
@@ -54,6 +55,15 @@ def market_analysis(trader,tick_notify,loss_trig,gain_trig):
                 rhse.send_email(msg0,0)
                 time.sleep(5)
                 tick_notify[securities_tick[itick]] = 1  
+            #Is the stock position above a max value
+            elif (float(last_trade_price)*float(quantity)) > max_value:
+                #Message structured for three line text message
+                msg0 = '%s, Trading @ %s Current Value %s\nOver Max Value %s, Sell shares'\
+                %(securities_tick[itick],last_trade_price[:5],
+                str(float(last_trade_price)*float(quantity))[:5],str(max_value[:5]))
+                rhse.send_email(msg0,0)
+                time.sleep(5)
+                tick_notify[securities_tick[itick]] = 1   
     #Cyle though watchlist and grab ticks
     for itick, watch in enumerate(watchlist['results']):
         #Request current stock info
