@@ -58,9 +58,9 @@ def market_analysis(trader,tick_notify,loss_trig,gain_trig,max_value):
             #Is the stock position above a max value
             elif (float(last_trade_price)*float(quantity)) > max_value:
                 #Message structured for three line text message
-                msg0 = '%s, Trading @ %s Current Value %s\nOver Max Value %s, Sell shares'\
+                msg0 = '%s, Trading @ %s Tot Val %s\nOver Max Value %s, Sell shares'\
                 %(securities_tick[itick],last_trade_price[:5],
-                str(float(last_trade_price)*float(quantity))[:5],str(max_value[:5]))
+                str(float(last_trade_price)*float(quantity))[:5],str(max_value)[:5])
                 rhse.send_email(msg0,0)
                 time.sleep(5)
                 tick_notify[securities_tick[itick]] = 1   
