@@ -29,13 +29,13 @@ def database_analysis(path,all_tick,trade_days,decline,skew):
             # Has the ticker dropped more the 5% in 30 trading days
             try: 
                 if float(row[0]['previous_close'])/float(row[trade_days-1]['previous_close']) < decline:
-                    msg2 += '%s Close @ %s Dwn %s%% Ovr %s tday\n'\
+                    msg2 += '%s @ %s Down %s%% Over %stdays\n'\
                     %(all_tick[itick], row[0]['previous_close'],
                     str((1-float(row[0]['previous_close'])
                     /float(row[trade_days-1]['previous_close']))*100)[:4], str(trade_days))
                     # Has the ticker traded up the past 5 trading days
                     if float(row[0]['previous_close'])/float(row[4]['previous_close']) > 1:
-                        msg2 += 'Up %s%% Past 5 tday\n'\
+                        msg2 += 'Up %s%% Past 5 tdays\n'\
                         %(str((float(row[0]['previous_close'])
                         /float(row[4]['previous_close'])-1)*100)[:4])
                     send = 1
@@ -44,7 +44,7 @@ def database_analysis(path,all_tick,trade_days,decline,skew):
             # Has the ticker reached a new 52 week low
             try:
                 if float(row[0]['low_52_weeks']) < float(row[1]['low_52_weeks']):
-                    msg2 += '%s @ %s near 52 Wk Low\n'\
+                    msg2 += '%s @ %s near 52 Week Low\n'\
                     %(all_tick[itick], row[0]['previous_close'])
                     send = 1
             except:
@@ -55,11 +55,11 @@ def database_analysis(path,all_tick,trade_days,decline,skew):
                     sentiment = sentiment*row[day]['opinion']
                 #Is the sentiment skewed
                 if sentiment >= (1*skew):
-                    msg2 += '%s Sentiment ^Pos @ %s thru %s tday\n'\
+                    msg2 += '%s Sentiment ^Pos @ %s thru %stdays\n'\
                     %(all_tick[itick], str(sentiment)[:3], str(trade_days))
                     send = 1
                 elif sentiment <= (1/skew):
-                    msg2 += '%s Sentiment ^Neg @ %s thru %s tday\n'\
+                    msg2 += '%s Sentiment ^Neg @ %s thru %stdays\n'\
                     %(all_tick[itick], str(sentiment)[:3], str(trade_days))
                     send = 1
             except:

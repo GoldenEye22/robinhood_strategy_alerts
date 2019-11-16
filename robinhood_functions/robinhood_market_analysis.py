@@ -38,27 +38,27 @@ def market_analysis(trader,tick_notify,loss_trig,gain_trig,max_value):
                 #How much has this position lost
                 loss_per = 100*(1-float(last_trade_price)/float(previous_close))
                 #Message structured for three line text message
-                msg0 = '%s, Trading @ %s From Avg %s\nDown %s%% From Prev Close, Buy %s shares'\
+                msg0 = '%s @ %s From Avg %s\nDown %s%% From Prev Close\n Buy %s shares'\
                 %(securities_tick[itick],last_trade_price[:5],average_buy_price[:5],
                 str(loss_per)[:4],str(buy_number_of_shares))
                 rhse.send_email(msg0,0)
                 time.sleep(5)
                 tick_notify[securities_tick[itick]] = 1
             #Is the stock up by a certain percantage from average buy price
-            elif float(last_trade_price) > (float(average_buy_price)*(1+gain_trig)):
-                #How much has this position gained
-                gain_per = 100*(float(last_trade_price)/float(average_buy_price)-1)
-                #Message structured for three line text message
-                msg0 = '%s, Trading @ %s From Avg %s\nUp: %s%%, Sell shares'\
-                %(securities_tick[itick],last_trade_price[:5],average_buy_price[:5],
-                str(gain_per)[:4])
-                rhse.send_email(msg0,0)
-                time.sleep(5)
-                tick_notify[securities_tick[itick]] = 1  
+#            elif float(last_trade_price) > (float(average_buy_price)*(1+gain_trig)):
+#                #How much has this position gained
+#                gain_per = 100*(float(last_trade_price)/float(average_buy_price)-1)
+#                #Message structured for three line text message
+#                msg0 = '%s, Trading @ %s From Avg %s\nUp: %s%%, Sell shares'\
+#                %(securities_tick[itick],last_trade_price[:5],average_buy_price[:5],
+#                str(gain_per)[:4])
+#                rhse.send_email(msg0,0)
+#                time.sleep(5)
+#                tick_notify[securities_tick[itick]] = 1  
             #Is the stock position above a max value
             elif (float(last_trade_price)*float(quantity)) > max_value:
                 #Message structured for three line text message
-                msg0 = '%s, Over Max %s by %s\nSell shares Trading @ %s'\
+                msg0 = '%s Over Max %s by %s\nSell shares @ %s'\
                 %(securities_tick[itick],(str(max_value/1000)+'k')[:5],
                 str(float(last_trade_price)*float(quantity)-max_value)[:6],last_trade_price[:5])
                 rhse.send_email(msg0,0)
@@ -85,7 +85,7 @@ def market_analysis(trader,tick_notify,loss_trig,gain_trig,max_value):
                 #How much has this position lost
                 loss_per = 100*(1-float(last_trade_price)/float(previous_close))
                 #Message structured for three line text message
-                msg0 = '%s, Trading @ %s From Prev Close %s Down %s%%'\
+                msg0 = '%s @ %s From Prev Close %s\n Down: %s%%'\
                 %(ticker,last_trade_price[:5],previous_close[:5],
                   str(loss_per)[:4])
                 rhse.send_email(msg0,0)

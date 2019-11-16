@@ -15,9 +15,9 @@ def send_email(msg,sub):
     FROM       = emailstr[4]
     TO = [email1,email2] #must be a list
     SUBJECT = []
-    SUBJECT.append('(Robinhood Trade Alert ----- RealTime)')
-    SUBJECT.append('(Robinhood Current Portfolio Weight %)')
-    SUBJECT.append('(Robinhood Trade Timeline --- Nightly)')
+    SUBJECT.append('(Robinhood Trade Alert --- RealTime)')
+    SUBJECT.append('(Robinhood Current Portfolio Weight)')
+    SUBJECT.append('(Robinhood Trade Timeline - Nightly)')
     TEXT = msg
 
     # Prepare actual message
