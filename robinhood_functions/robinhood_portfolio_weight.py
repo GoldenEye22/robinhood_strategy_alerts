@@ -47,7 +47,7 @@ def portfolio_weight(trader):
         msg1 += '%s %s%%\n'\
         %(itick,str(percent)[:4])
         #Txt message can only be so long     
-        if len(msg1) > 95:
+        if len(msg1) > 120:
             rhse.send_email(msg1,1)
             time.sleep(5)
             msg1 = ''
