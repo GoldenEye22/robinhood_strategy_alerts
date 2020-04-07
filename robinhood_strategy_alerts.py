@@ -2,7 +2,7 @@
 """
 Created on Thu Nov 22 23:04:29 2018
 
-@author: Andy
+@author: Andy 
 """
 from Robinhood import Robinhood
 import time
@@ -21,11 +21,11 @@ tick_notify = {}
 #Main Parameters to Set
 ref_time = 300    
 loss_trig = 0.05
-gain_trig = 0.25
+gain_trig = 0.30
 trade_days = 75
-decline = 0.95
+decline = 0.90
 skew = 2
-max_value = 10000
+max_value = 20000
 #Endless loop, need to find better way to do this.
 while True: 
     #Get the current time, clear the notification flags, setup parameters

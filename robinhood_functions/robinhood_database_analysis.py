@@ -34,7 +34,7 @@ def database_analysis(path,all_tick,td,decline,skew):
                 print ('Failed to get timdiff')
                 timediff = 365
             if timediff.days < 365:
-                # Has the ticker dropped more the 5% in 30 trading days
+                # Has the ticker dropped more the X% in X trading days
                 try: 
                     if float(row[0]['previous_close'])/float(row[td-1]['previous_close']) < decline:
                         msg2 += '%s @ %s Down %s%% Over %std'\
