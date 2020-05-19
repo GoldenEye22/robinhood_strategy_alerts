@@ -46,7 +46,7 @@ def database_analysis(path,all_tick,td,decline,skew):
                             msg2 += '\nUp %s%% Past 5 td'\
                             %(str((float(row[0]['previous_close'])
                             /float(row[4]['previous_close'])-1)*100)[:4])
-                        send = 1
+                            send = 1
                 except:
                     print ('Failed to get previous_close')
                 # Has the ticker reached a new 52 week low

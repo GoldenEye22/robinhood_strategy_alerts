@@ -20,9 +20,9 @@ todaystr = time.strftime('%Y%m%d %H:%M:%S')
 tick_notify = {}
 #Main Parameters to Set
 ref_time = 300    
-loss_trig = 0.05
+loss_trig = 0.1
 gain_trig = 0.30
-trade_days = 75
+trade_days = 50
 decline = 0.90
 skew = 2
 max_value = 20000
