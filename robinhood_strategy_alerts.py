@@ -25,7 +25,7 @@ gain_trig = 0.30
 trade_days = 50
 decline = 0.90
 skew = 2
-max_value = 20000
+max_value = 15000
 #Endless loop, need to find better way to do this.
 while True: 
     #Get the current time, clear the notification flags, setup parameters

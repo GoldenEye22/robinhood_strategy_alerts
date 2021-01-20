@@ -15,7 +15,11 @@ def database_insert(trader,path,all_tick):
         #Collect data for each quote to be stored
         quote_data = trader.quote_data(all_tick[itick])
         fundamentals = trader.fundamentals(all_tick[itick])
-        popularity = trader.get_popularity(all_tick[itick])
+        try:
+            popularity = trader.get_popularity(all_tick[itick])
+        except:
+            print(all_tick[itick] + ' Not Popular')
+            popularity = 0
         news = trader.get_news(all_tick[itick])
         opinion = 1
         for story in news['results']:
